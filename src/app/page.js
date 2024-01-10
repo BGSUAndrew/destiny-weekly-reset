@@ -1,13 +1,35 @@
+'use client'
+
 import Image from 'next/image'
 import styles from './page.module.css'
+import { useState, useEffect } from 'react'
 
 export default function Home() {
+        const url = "https://www.bungie.net/platform/Destiny2/Milestones";
+        const [nightfall, setNightfall] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(url,{
+        headers: {
+            'x-api-key': '2c6c008e57644a4bb63f00504758c443'
+        }
+    });
+      const newData = await response.json();
+      console.log(newData);
+      setNightfall(newData.Response[2029743966].activities[0].activityHash)
+      console.log(nightfall);
+    };
+    fetchData();
+  });
+
   return (
     <main className={styles.main}>
       <div className={styles.description}>
         <p>
           Get started by editing&nbsp;
           <code className={styles.code}>src/app/page.js</code>
+
         </p>
         <div>
           <a
@@ -37,6 +59,11 @@ export default function Home() {
           height={37}
           priority
         />
+      </div>
+      <div>
+        <h1>Hello world</h1>
+        <p>{url}</p>
+        <p>{nightfall}</p>
       </div>
 
       <div className={styles.grid}>
@@ -92,4 +119,5 @@ export default function Home() {
       </div>
     </main>
   )
+  
 }
